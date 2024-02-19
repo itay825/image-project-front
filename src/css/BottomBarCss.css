@@ -1,0 +1,35 @@
+.Bottom-bar {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #2c2c54;
+  color: #ececec;
+}
+  
+.Bottom-bar div {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+  
+.Bottom-bar div:hover {
+  background-color: #474787;
+  color: #fff;
+}
+
+button {
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #474787;
+  color: #ececec;
+  border: none;
+}
+
+button:hover {
+  background-color: rgb(32, 32, 89);
+  color: #fff;
+}

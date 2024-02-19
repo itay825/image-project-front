@@ -1,0 +1,12 @@
+body {
+  background-color: #9f9da4b9;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.mainBody {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+

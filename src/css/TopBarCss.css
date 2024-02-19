@@ -1,0 +1,17 @@
+.Top-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2c2c54;
+    color: #ececec;
+}
+
+.Section {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.Section div:hover {
+    color: #9d9dc0;
+}
