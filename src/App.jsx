@@ -11,7 +11,11 @@ import './App.css';
 const App = () => {
   const [canvasHistory, setCanvasHistory] = useState([]);
   const [currentCanvasIndex, setCurrentCanvasIndex] = useState(0);
+  const [paintMode, setPaintMode] = useState(false);
 
+  const handlePaintModeToggle = () => {
+    setPaintMode((prevMode) => !prevMode);
+  };
   const downloadCanvasImage = () => {
     const canvas = document.getElementById('canvas2');
     const dataURL = canvas.toDataURL("image/png");
@@ -140,9 +144,9 @@ const handleRedo = () => {
         <BeforeCanvasContainer handleClick={handleClick} />
         <div>
           <MiddleBox onUndo={handleUndo} onRedo={handleRedo} />
-          <Paint />
+          <Paint handleClick={handlePaintModeToggle}/>
         </div>
-        <AfterCanvasContainer handleClick={handleClick} />
+        <AfterCanvasContainer handleClick={handleClick} paintMode={paintMode}/>
       </div>
       <BottomBar handleClick={handleClick} />
     </div>
