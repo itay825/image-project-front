@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import '../css/TopBarCss.css';
 import { IoMdDownload } from "react-icons/io";
+import User from './ForUser';
 
 const TopBar = ({ handleDownload }) => {
   return (
@@ -9,6 +10,7 @@ const TopBar = ({ handleDownload }) => {
         <label htmlFor="fileInput">Choose File:</label>
         <input type="file" id="fileInput" />
         <button onClick={handleDownload}><IoMdDownload /> Download</button>
+        <User />
       </div>
     </div>
   );
