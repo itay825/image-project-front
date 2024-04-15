@@ -27,36 +27,37 @@ const App = () => {
     document.body.removeChild(a);
   };
 
-  const sendImageToServer = async (operation, dataURL) => {
+  const sendImageToServer = async (dataURL, startX, startY, endX, endY ) => {
     const apiUrl = 'http://localhost:5000/process_image';
     const headers = {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'http://localhost:3000',
     };
-
-    console.log('Sending data to server:', { operation, dataURL });
-
+  
+    console.log('Sending data to server:', { dataURL, startX, startY, endX, endY });
+  
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: headers,
-      body: JSON.stringify({ operation, dataURL }),
+      body: JSON.stringify({dataURL , startX, startY, endX, endY}),
     });
-
+  
     if (!response.ok) {
       throw new Error(`Server error: ${response.status} - ${response.statusText}`);
     }
-
+  
     console.log('Received response from server:', response);
-
+  
     const data = await response.blob();
-
+  
     console.log('Received image data from server:', data);
-
+  
     const blob = new Blob([data], { type: 'image/png' });
     const imgUrl = URL.createObjectURL(blob);
-
+  
     return imgUrl;
   };
+  
 
   const drawCanvas = (canvasId, imgUrl) => {
     const canvas = document.getElementById(canvasId);
@@ -109,27 +110,30 @@ const handleRedo = () => {
   }
 };
 
+const handleClick = async (startX, startY, endX, endY) => {
+  try {
+    const canvas = document.getElementById('canvas2');
+    const dataURL = canvas.toDataURL("image/png");
 
-  const handleClick = async (operation) => {
-    try {
-      const canvas = document.getElementById('canvas2');
-      const dataURL = canvas.toDataURL("image/png");
-  
-      const imgUrl = await sendImageToServer(operation, dataURL);
+    // Send canvas image data, rectangle coordinates, start, and end coordinates to the server
+    const imgUrl = await sendImageToServer(dataURL, startX, startY, endX, endY);
 
-      drawCanvas('canvas2', imgUrl);
+    drawCanvas('canvas2', imgUrl);
 
-      // Update canvas to be canvas2 -1
-      if (currentCanvasIndex > 0) {
-        drawCanvas('canvas', canvasHistory[currentCanvasIndex - 1]);
-      }
-
-      handleCanvasUpdate(imgUrl);
-
-    } catch (error) {
-      console.error('Error:', error.message || error);
+    // Update canvas to be canvas2 -1
+    if (currentCanvasIndex > 0) {
+      drawCanvas('canvas', canvasHistory[currentCanvasIndex - 1]);
     }
-  };
+
+    handleCanvasUpdate(imgUrl);
+
+  } catch (error) {
+    console.error('Error:', error.message || error);
+  }
+};
+
+
+
 
   useEffect(() => {
     return () => {
@@ -146,7 +150,7 @@ const handleRedo = () => {
           <MiddleBox onUndo={handleUndo} onRedo={handleRedo} />
           <Paint handleClick={handlePaintModeToggle}/>
         </div>
-        <AfterCanvasContainer handleClick={handleClick} paintMode={paintMode}/>
+        <AfterCanvasContainer handleClick={handleClick} paintMode={paintMode} />
       </div>
       <BottomBar handleClick={handleClick} />
     </div>

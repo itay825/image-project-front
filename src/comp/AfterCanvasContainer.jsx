@@ -1,13 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
-const AfterCanvasContainer = ({ paintMode }) => {
+const AfterCanvasContainer = ({ handleClick}) => {
   const canvasRef2 = useRef(null);
+  const isDrawing = useRef(false);
+  const startPosition = useRef({ x: 0, y: 0 });
+  const endPosition = useRef({ x: 0, y: 0 });
+  const rectangles = useRef([]); 
 
   useEffect(() => {
-    console.log("Paint mode is:", paintMode);
-
     const canvas = canvasRef2.current;
     const ctx = canvas.getContext('2d');
+
+    // Function to draw all rectangles
+    const drawRectangles = () => {
+      rectangles.current.forEach(rect => {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
+      });
+    };
 
     document.getElementById('fileInput').addEventListener('change', (event) => {
       const file = event.target.files[0];
@@ -17,6 +27,7 @@ const AfterCanvasContainer = ({ paintMode }) => {
         const img = new Image();
         img.onload = function () {
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          drawRectangles(); 
         };
         img.src = event.target.result;
       };
@@ -24,78 +35,50 @@ const AfterCanvasContainer = ({ paintMode }) => {
       reader.readAsDataURL(file);
     });
 
-    // Check if paint mode is active before enabling painting
-    if (paintMode) {
-      console.log("Paint mode is ON");
+    const startDrawing = (event) => {
+      isDrawing.current = true;
+      startPosition.current = { x: event.clientX - canvas.getBoundingClientRect().left, y: event.clientY - canvas.getBoundingClientRect().top };
+    };
 
-      let painting = false;
+    const drawRectangle = (event) => {
+      if (isDrawing.current) {
+        endPosition.current = { x: event.clientX - canvas.getBoundingClientRect().left, y: event.clientY - canvas.getBoundingClientRect().top };
+        const width = endPosition.current.x - startPosition.current.x;
+        const height = endPosition.current.y - startPosition.current.y;
 
-      const startPaint = (event) => {
-        painting = true;
-        paint(event);
-      };
+        drawRectangles(); // Draw existing rectangles
 
-      const endPaint = () => {
-        painting = false;
-        ctx.beginPath();
-      };
+        ctx.fillStyle = 'black';
+        ctx.fillRect(startPosition.current.x, startPosition.current.y, width, height);
 
-      const paint = (event) => {
-        if (!painting) return;
+        // Log start and end positions
+        // console.log("Start Position:", startPosition.current);
+        // console.log("End Position:", endPosition.current);
+      }
+    };
 
-        ctx.lineWidth = 30;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
+    const stopDrawing = () => {
+      if (isDrawing.current) {
+        isDrawing.current = false;
+        handleClick(startPosition.current.x,startPosition.current.y, endPosition.current.x, endPosition.current.y);
+      }
+    };
 
-        ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
-      };
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', drawRectangle);
+    canvas.addEventListener('mouseup', stopDrawing);
 
-      // const applyMask = () => {
-      //   // Your masking logic here
-      //   // For example, you can create a new canvas for the mask and apply it to the original canvas
-      //   const maskCanvas = document.createElement('canvas');
-      //   maskCanvas.width = canvas.width;
-      //   maskCanvas.height = canvas.height;
-      //   const maskCtx = maskCanvas.getContext('2d');
-      //   maskCtx.fillStyle = 'yellow';
-      //   maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
-      
-      //   ctx.globalCompositeOperation = 'destination-in';
-      //   ctx.drawImage(maskCanvas, 0, 0);
-      
-      //   // Convert the masked canvas to a data URL
-      //   const maskedDataURL = canvas.toDataURL();
-        
-      //   // Reset composite operation
-      //   ctx.globalCompositeOperation = 'source-over';
-      
-      //   // Log the masked data URL to the console
-      //   console.log('Masked Canvas Data URL:', maskedDataURL);
-      // };
-
-      canvas.addEventListener('mousedown', startPaint);
-      canvas.addEventListener('mouseup', endPaint);
-      canvas.addEventListener('mousemove', paint);
-
-      return () => {
-        // Cleanup event listeners when the component unmounts
-        canvas.removeEventListener('mousedown', startPaint);
-        canvas.removeEventListener('mouseup', endPaint);
-        canvas.removeEventListener('mousemove', paint);
-      };
-    } else {
-      console.log("Paint mode is OFF");
-    }
-  }, [paintMode]);
+    return () => {
+      canvas.removeEventListener('mousedown', startDrawing);
+      canvas.removeEventListener('mousemove', drawRectangle);
+      canvas.removeEventListener('mouseup', stopDrawing);
+    };
+  }, []);
 
   return (
     <div className="canvas-container">
       <label className="title">After</label>
       <canvas id="canvas2" ref={canvasRef2} width={500} height={500}></canvas>
-      {/* <button onClick={applyMask}>Apply Mask</button> */}
     </div>
   );
 };
