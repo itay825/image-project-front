@@ -1,40 +1,46 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from './UserContext'; // Import the useUser hook
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 import '../css/LoginCss.css';
 
-export default function LoginPage() {
+const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-
+    const { loggedInUser, setLoggedInUser } = useUser(); // Use the useUser hook to access loggedInUser state
+     
     const logInUser = () => {
         if (email.length === 0) {
             alert("Email has been left blank!");
+            return;
         } else if (password.length === 0) {
             alert("Password has been left blank!");
-        } else {
-            axios.post('http://127.0.0.1:5000/login', {
-                email: email,
-                password: password
-            }, {
-                withCredentials: true  // Ensure credentials are included in the request
-            })
-            .then(function (response) {
-                console.log(response); // Check the entire response object
-
-                // Set a cookie (replace 'myCookieName' and 'myCookieValue' with actual values)
-                document.cookie = 'myCookieName=myCookieValue; expires=Thu, 01 Jan 2030 00:00:00 UTC; path=/';
-
-                navigate("/");
-            })
-            .catch(function (error) {
-                console.error(error, 'error');
-                if (error.response && error.response.status === 401) {
-                    alert("Invalid credentials");
-                }
-            });
+            return;
         }
+
+        axios.post('http://127.0.0.1:5000/login', {
+            email: email,
+            password: password
+        }, {
+            withCredentials: true
+        })
+        .then(function (response) {
+            setLoggedInUser(response.data); // Set loggedInUser using setLoggedInUser function from useUser
+            navigate("/"); // Redirect to home page
+        })
+        .catch(function (error) {
+            console.error(error, 'error');
+            if (error.response && error.response.status === 401) {
+                alert("Invalid credentials");
+            }
+        });
+    }
+
+    // Redirect to home page if user is already logged in
+    if (loggedInUser) {
+        navigate("/");
+        return null; // Prevent rendering of login page
     }
 
     return (
@@ -54,10 +60,12 @@ export default function LoginPage() {
                         <button type="button" className="btn btn-primary" onClick={logInUser}>Login</button>
                     </div>
                     <div className="text-center">
-                        <p className="mb-0">Don't have an account? <a href="/register" className="link-danger">Register</a></p>
+                        <p className="mb-0">Don't have an account? <Link to="/register" className="link-danger">Register</Link></p>
                     </div>
                 </div>
             </div>
         </div>
     );
 }
+
+export default LoginPage;

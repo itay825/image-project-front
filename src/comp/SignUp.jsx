@@ -3,15 +3,13 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import '../css/LoginCss.css';
 
-export default function RegisterPage() {
-
+const RegisterPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
      
     const registerUser = () => {
-        // Check if passwords match
         if (password !== confirmPassword) {
             alert("Passwords do not match");
             return;
@@ -22,7 +20,6 @@ export default function RegisterPage() {
             password: password
         })
         .then(function (response) {
-            console.log(response);
             navigate("/");
         })
         .catch(function (error) {
@@ -54,10 +51,12 @@ export default function RegisterPage() {
                         <button type="button" className="btn btn-primary" onClick={registerUser}>Sign Up</button>
                     </div>
                     <div className="text-center">
-                        <p className="small fw-bold mt-2 pt-1 mb-0">Already have an account? <a href="/login" className="link-danger">Login</a></p>
+                        <p className="small fw-bold mt-2 pt-1 mb-0">Already have an account? <Link to="/login" className="link-danger">Login</Link></p>
                     </div>
                 </div>
             </div>
         </div>
     );
 }
+
+export default RegisterPage;

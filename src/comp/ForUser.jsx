@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
-export default function LandingPage() {
-
+const ForUser = () => {
   return (
     <div>
       <div className="container h-100">
@@ -18,3 +17,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+export default ForUser;

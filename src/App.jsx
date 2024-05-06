@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from './comp/TopBar'; 
 import BeforeCanvasContainer from './comp/BeforeCanvasContainer';
 import AfterCanvasContainer from './comp/AfterCanvasContainer';
@@ -7,11 +7,13 @@ import MiddleBox from './comp/MiddleBox';
 import Paint from './comp/Paint';
 import './css/CanvasConCss.css'
 import './App.css';
+import { useUser } from './comp/UserContext';
 
 const App = () => {
   const [canvasHistory, setCanvasHistory] = useState([]);
   const [currentCanvasIndex, setCurrentCanvasIndex] = useState(0);
   const [paintMode, setPaintMode] = useState(false);
+  // const { loggedInUser } = useUser(); // Check the useUser hook here
 
   const handlePaintModeToggle = () => {
     setPaintMode((prevMode) => !prevMode);
@@ -132,14 +134,13 @@ const handleClick = async (startX, startY, endX, endY) => {
   }
 };
 
-
-
-
   useEffect(() => {
     return () => {
       setCanvasHistory([]);
     };
   }, []);
+
+  // console.log('loggedInUser:', loggedInUser); // Add this console log to check loggedInUser
 
   return (
     <div>
@@ -153,6 +154,7 @@ const handleClick = async (startX, startY, endX, endY) => {
         <AfterCanvasContainer handleClick={handleClick} paintMode={paintMode} />
       </div>
       <BottomBar handleClick={handleClick} />
+
     </div>
   );
 };
