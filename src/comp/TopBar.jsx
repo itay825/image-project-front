@@ -11,7 +11,6 @@ const TopBar = ({ handleDownload, userName }) => {
         <label htmlFor="fileInput">Choose File:</label>
         <input type="file" id="fileInput" />
         <button onClick={handleDownload}><IoMdDownload /> Download</button>
-        <span>Welcome, {userName}</span> {/* Display user's name */}
         <User />
       </div>
     </div>

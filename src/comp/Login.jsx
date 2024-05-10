@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useUser } from './UserContext'; // Import the useUser hook
 import axios from 'axios';
-import '../css/LoginCss.css';
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const { loggedInUser, setLoggedInUser } = useUser(); // Use the useUser hook to access loggedInUser state
-     
+
     const logInUser = () => {
         if (email.length === 0) {
             alert("Email has been left blank!");
@@ -26,8 +24,24 @@ const LoginPage = () => {
             withCredentials: true
         })
         .then(function (response) {
-            setLoggedInUser(response.data); // Set loggedInUser using setLoggedInUser function from useUser
-            navigate("/"); // Redirect to home page
+            // Set token expiry to 12 hours from now
+            const expiryDate = new Date();
+            expiryDate.setTime(expiryDate.getTime() + (12 * 60 * 60 * 1000)); // 12 hours in milliseconds
+
+            // Get the email and token from the response
+            const { email, token } = response.data;
+
+            // Create a token object including the email
+            const tokenData = {
+                email: email,
+                token: token
+            };
+
+            // Set the token cookie
+            Cookies.set('token', JSON.stringify(tokenData), { expires: expiryDate, secure: true, sameSite: 'strict' });
+
+            // Redirect to profile page where the user's email is displayed
+            navigate("/");
         })
         .catch(function (error) {
             console.error(error, 'error');
@@ -35,12 +49,6 @@ const LoginPage = () => {
                 alert("Invalid credentials");
             }
         });
-    }
-
-    // Redirect to home page if user is already logged in
-    if (loggedInUser) {
-        navigate("/");
-        return null; // Prevent rendering of login page
     }
 
     return (

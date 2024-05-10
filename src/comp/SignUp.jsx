@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../css/LoginCss.css';
 
 const RegisterPage = () => {
@@ -8,23 +8,23 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
-     
+
     const registerUser = () => {
         if (password !== confirmPassword) {
             alert("Passwords do not match");
             return;
         }
-        
+
         axios.post('http://127.0.0.1:5000/signup', {
             email: email,
             password: password
         })
         .then(function (response) {
-            navigate("/");
+            navigate("/login"); // Redirect to login page after successful registration
         })
         .catch(function (error) {
-            console.log(error, 'error');
-            if (error.response.status === 401) {
+            console.error(error, 'error');
+            if (error.response && error.response.status === 401) {
                 alert("Invalid credentials");
             }
         });
