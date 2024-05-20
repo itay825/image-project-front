@@ -29,8 +29,9 @@ const App = () => {
     document.body.removeChild(a);
   };
 
+
   const sendImageToServer = async (dataURL, startX, startY, endX, endY ) => {
-    const apiUrl = 'http://localhost:5000/process_image';
+    const apiUrl = 'https://localhost:5000/process_image';
     const headers = {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'http://localhost:3000',

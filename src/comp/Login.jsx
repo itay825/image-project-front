@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +18,7 @@ const LoginPage = () => {
             return;
         }
 
-        axios.post('http://127.0.0.1:5000/login', {
+        axios.post('https://localhost:5000/login', {
             email: email,
             password: password
         }, {

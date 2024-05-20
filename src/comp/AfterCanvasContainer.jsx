@@ -5,7 +5,7 @@ const AfterCanvasContainer = () => {
   const paintCanvasRef = useRef(null);
   const isDrawing = useRef(false);
   const lastPosition = useRef({ x: 0, y: 0 });
-  const brushSize = 25; // Updated brush size
+  const brushSize = 15; // Updated brush size
   const canvasWidth = 500;
   const canvasHeight = 500;
   const rectangles = useRef([]);
@@ -19,7 +19,7 @@ const AfterCanvasContainer = () => {
     // Function to draw all rectangles
     const drawRectangles = () => {
       rectangles.current.forEach(rect => {
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = rgb(0, 0, 0);
         ctx.fillRect(rect.startX, rect.startY, rect.width, rect.height);
       });
     };
@@ -86,7 +86,7 @@ const AfterCanvasContainer = () => {
     const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
     const data = imageData.data;
     const offsetX = -10; // Adjust the offset to the left
-    const offsetY = -12; // Adjust the offset higher
+    const offsetY = -10; // Adjust the offset higher
   
     // Create a binary mask with values 255 and 0
     for (let i = 0; i < data.length; i += 4) {
@@ -102,8 +102,6 @@ const AfterCanvasContainer = () => {
   
     return paintCanvas.toDataURL();
   };
-  
-  
 
   const handleExport = () => {
     console.log("Export button clicked");
@@ -112,7 +110,7 @@ const AfterCanvasContainer = () => {
     const imageURL = canvas.toDataURL();
     
     const paintCanvas = paintCanvasRef.current;
-    const maskURL = getBinaryMaskURL(); // Using the getBinaryMaskURL function
+    const maskURL = getBinaryMaskURL();
     
     console.log("Image URL:", imageURL);
     console.log("Mask URL:", maskURL);
@@ -136,7 +134,7 @@ const AfterCanvasContainer = () => {
         const compositeImageURL = tempCanvas.toDataURL();
   
         // Send the composite image URL and the mask URL to the server
-        fetch('http://localhost:5000/process_image', {
+        fetch('https://localhost:5000/process_image', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
