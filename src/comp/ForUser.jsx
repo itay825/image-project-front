@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
+import '../css/BottomBarCss.css';
 const ForUser = () => {
   const [userName, setUserName] = useState('');
 
@@ -31,24 +31,26 @@ const ForUser = () => {
   };
 
   return (
-    <div>
-      <div className="container h-100">
-        <div className="row h-100">
-          <div className="col-12">
-            {userName ? (
-              <p>
-                Hi, {userName} <button onClick={handleLogout} className="btn btn-danger">Logout</button>
-              </p>
-            ) : (
-              <p>
-                <Link to="/login" className="btn btn-success">Login</Link> | 
-                <Link to="/register" className="btn btn-success">Register</Link>
-              </p>
-            )}
-          </div>
-        </div>
+<div class="container-bar">
+  <div class="container h-100">
+    <div class="row h-100">
+      <div class="col-12">
+        {userName ? (
+          <p>
+            Hi, {userName} <button onClick={handleLogout} class="btn btn-logout">Logout</button>
+          </p>
+        ) : (
+          <p>
+            <Link to="/login" class="btn btn-blue">Login</Link> 
+            <Link to="/register" class="btn btn-blue">Register</Link>
+          </p>
+        )}
       </div>
     </div>
+  </div>
+</div>
+
+
   );
 }
 

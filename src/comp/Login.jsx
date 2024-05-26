@@ -18,7 +18,8 @@ const LoginPage = () => {
             return;
         }
 
-        axios.post('https://localhost:5000/login', {
+        // axios.post('https://localhost:5000/login', {
+        axios.post('http://localhost:5000/login', {
             email: email,
             password: password
         }, {
@@ -70,6 +71,7 @@ const LoginPage = () => {
                     </div>
                     <div className="text-center">
                         <p className="mb-0">Don't have an account? <Link to="/register" className="link-danger">Register</Link></p>
+                        <p className="mb-0">Main page: <Link to="/" className="link-danger">Main</Link></p>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,150 @@
+@startuml
+
+package "React Component: AfterCanvasContainer" {
+
+
+  class AfterCanvasContainer {
+
+    - canvasRef2: useRef(null)
+    - paintCanvasRef: useRef(null)
+    - isDrawing: useRef(false)
+    - lastPosition: useRef({ x: 0, y: 0 })
+    - brushSize: 15
+    - canvasWidth: 500
+    - canvasHeight: 500
+    - rectangles: useRef([])
+    - imageURL: useState("")
+    - maskURL: useState("")
+
+    + useEffect()
+    + getPosition(event)
+    + getImageURL(canvas)
+    + getBinaryMaskURL()
+    + handleExport()
+
+  }
+
+}
+
+package "React Component: BeforeCanvasContainer" {
+
+
+  class BeforeCanvasContainer {
+
+    - canvasRef: useRef(null)
+
+    + useEffect()
+
+  }
+
+}
+
+package "React Component: Paint" {
+
+  class Paint {
+
+    + downloadCanvasImage()
+    + handleFileChange(event)
+
+  }
+
+}
+
+package "React Component: TopBar" {
+
+
+  class TopBar {
+
+    + handleDownload()
+    + userName: prop
+
+  }
+
+}
+
+package "React Component: ForUser" {
+
+
+
+  class ForUser {
+
+    + handleLogout()
+
+  }
+
+}
+
+package "React Component: LoginPage" {
+
+
+  class LoginPage {
+
+    - email: useState('')
+    - password: useState('')
+    - navigate: useNavigate()
+
+    + logInUser()
+
+  }
+
+}
+
+package "React Component: RegisterPage" {
+
+
+
+  class RegisterPage {
+
+    - email: useState('')
+    - password: useState('')
+    - confirmPassword: useState('')
+    - navigate: useNavigate()
+
+    + registerUser()
+
+  }
+
+}
+
+package "UserContext Module" {
+
+
+  class UserContext {
+
+    + UserProvider
+    + useUser()
+
+  }
+
+}
+
+package "React Component: App" {
+
+
+
+  class App {
+
+  }
+
+}
+
+MainComponent --> App
+MainComponent --> LoginPage
+MainComponent --> RegisterPage
+MainComponent *-- BrowserRouter
+MainComponent *-- Routes
+Routes --> Route
+Route --> App
+Route --> LoginPage
+Route --> RegisterPage
+
+React.Component <|-- AfterCanvasContainer
+React.Component <|-- BeforeCanvasContainer
+React.Component <|-- Paint
+React.Component <|-- TopBar
+React.Component <|-- ForUser
+React.Component <|-- LoginPage
+React.Component <|-- RegisterPage
+React.Component <|-- App
+
+@enduml

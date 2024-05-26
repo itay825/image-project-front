@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import '../css/MiddleBoxCss.css';
 
 const AfterCanvasContainer = () => {
   const canvasRef2 = useRef(null);
@@ -134,7 +135,8 @@ const AfterCanvasContainer = () => {
         const compositeImageURL = tempCanvas.toDataURL();
   
         // Send the composite image URL and the mask URL to the server
-        fetch('https://localhost:5000/process_image', {
+        // fetch('https://localhost:5000/process_image', {
+        fetch('http://localhost:5000/process_image', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -203,7 +205,8 @@ const AfterCanvasContainer = () => {
       <label className="title">After</label>
       <canvas id="canvas2" ref={canvasRef2} width={canvasWidth} height={canvasHeight}></canvas>
       <canvas ref={paintCanvasRef} style={{ display: "none" }}></canvas>
-      <button onClick={handleExport}>Export & Clear</button>
+      <button class="export-button" onClick={handleExport}>Export & Clear</button>
+
     </div>
   );
 };

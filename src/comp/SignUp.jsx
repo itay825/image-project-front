@@ -15,7 +15,8 @@ const RegisterPage = () => {
             return;
         }
 
-        axios.post('https://localhost:5000/signup', {
+        // axios.post('https://localhost:5000/signup', {
+        axios.post('http://localhost:5000/signup', {
             email: email,
             password: password
         })
@@ -52,6 +53,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="text-center">
                         <p className="small fw-bold mt-2 pt-1 mb-0">Already have an account? <Link to="/login" className="link-danger">Login</Link></p>
+                        <p className="mb-0">Main page <Link to="/" className="link-danger">Main</Link></p>
                     </div>
                 </div>
             </div>

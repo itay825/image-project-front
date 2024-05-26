@@ -1,41 +1,22 @@
-.middle-box {
-  display: flex;
-  flex-direction: row; /* Change to row to align items horizontally */
-  justify-content: space-between; /* Add space between the two containers */
-  padding: 5px;
-  border: 1px solid #2c2c54;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 15vw;
-  height: 20vh;
-  margin: 10px auto 30px auto;
-}
-
-.undo-container,
-.redo-container {
-  display: flex;
-  flex-direction: column; /* Align items vertically */
-  align-items: center;
-}
-
-.undo-button {
-  padding: 10px;
-  margin: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #2c2c54; /* Dark blue-gray button color */
-  color: #fff;
+.export-button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.undo-button:disabled {
-  background-color: #6a6a9a; /* Disabled button color */
-  cursor: not-allowed;
+.export-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
 
-.arrow-icon {
-  font-size: 100px;
-  color: #2c2c54;
-  margin-top: 10px;
+.export-button:active {
+  background-color: #003f7f;
+  transform: scale(1);
 }
+

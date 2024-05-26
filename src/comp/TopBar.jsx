@@ -1,17 +1,13 @@
 import React from "react";
 import '../css/TopBarCss.css';
-import { IoMdDownload } from "react-icons/io";
-import User from './ForUser';
+
 
 
 const TopBar = ({ handleDownload, userName }) => {
   return (
     <div className="Top-bar">
+            <h1 className="Title">Image Inpainting Project</h1>
       <div className="Section">
-        <label htmlFor="fileInput">Choose File:</label>
-        <input type="file" id="fileInput" />
-        <button onClick={handleDownload}><IoMdDownload /> Download</button>
-        <User />
       </div>
     </div>
   );
